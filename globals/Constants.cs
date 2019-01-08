@@ -227,7 +227,7 @@ namespace MyCustomGamemode.globals
         // Vehicle color types
         public const int VEHICLE_COLOR_TYPE_PREDEFINED = 0;
         public const int VEHICLE_COLOR_TYPE_CUSTOM = 1;
-        
+
         // Vehicle types
         public const int VEHICLE_CLASS_COMPACTS = 0;
         public const int VEHICLE_CLASS_SEDANS = 1;
@@ -388,6 +388,7 @@ namespace MyCustomGamemode.globals
         public const string COLOR_RADIO_EMERGENCY = "!{#FF9F0F}";
         public const string COLOR_NEWS = "!{#805CC9}";
         public const string COLOR_PICKUP = "!{#FFFF00}";
+        public const string PICKUP_MONEY_SECURITY_CASE = "{0xDE78F17E}";
 
         // Gargabe collector's routes
         public const int NORTH_ROUTE = 0;
@@ -401,6 +402,10 @@ namespace MyCustomGamemode.globals
 
         // Alcohol limit
         public const float WASTED_LEVEL = 0.4f;
+
+
+       //Following function checks if player is in range of point. 
+
         public bool IsPlayerInRangeOf(Client client,Vector3 vector,float range)
         {
             Vector3 cPos = client.Position;

@@ -93,18 +93,17 @@ namespace MyCustomGamemode.database
                 {
                     if (exists == 1)
                     {
-                        NAPI.Util.ConsoleOutput($"Password correct");
                         connection.Close();
                         return true;
                     }
                     else
                     {
-                        NAPI.Util.ConsoleOutput($"wrong password given");
+
                     }
                 }
                 else
                 {
-                    NAPI.Util.ConsoleOutput($"wrong password given");
+
                 }
                 connection.Close();
                 return false;
@@ -122,18 +121,18 @@ namespace MyCustomGamemode.database
                 {
                     if (exists == 1)
                     {
-                        NAPI.Util.ConsoleOutput($"Player exists");
+                     //
                         connection.Close();
                         return true;
                     }
                     else
                     {
-                        NAPI.Util.ConsoleOutput($"Name available");
+                    //
                     }
                 }
                 else
                 {
-                    NAPI.Util.ConsoleOutput($"Name available");
+
                 }
                 connection.Close();
                 return false;
@@ -166,6 +165,7 @@ namespace MyCustomGamemode.database
                     p.pName = dataReader["name"].ToString();
                     p.pAdmin = Convert.ToInt32(dataReader["adminlvl"]);
                     p.pMoney = Convert.ToInt32(dataReader["pmoney"]);
+                    p.pMats = Convert.ToInt32(dataReader["pmaterials"]);
                     NAPI.Util.ConsoleOutput($"Data pulled");
                     
                 }

@@ -90,7 +90,7 @@ namespace MyCustomGamemode.character
         public void mat1(Client client)
         {
             Vector3 pos = new Vector3(968.4285, -1625.152, 30.11069);
-            client.Position = pos;
+            client.Position = pos.Around(5);
         }
 
 
