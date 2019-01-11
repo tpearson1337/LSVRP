@@ -58,7 +58,7 @@ namespace MyCustomGamemode.database
             using (var connection = new MySqlConnection(connection_string))
             {
                 //create mysql command
-
+                connection.Open();
                 // Cleaner
                 MySqlCommand cmd = new MySqlCommand(query,connection);
                 /*//Assign the query using CommandText
@@ -68,6 +68,7 @@ namespace MyCustomGamemode.database
 
                 //Execute query
                 cmd.ExecuteNonQuery();
+                connection.Close();
             }
         }
         //Delete statement
