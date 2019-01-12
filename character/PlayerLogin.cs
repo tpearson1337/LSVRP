@@ -1,10 +1,10 @@
 ﻿using System;
 using GTANetworkAPI;
-using MyCustomGamemode.globals;
-using MyCustomGamemode.database;
-using MyCustomGamemode.loggers;
+using MyBeastSolution.Server.globals;
+using MyBeastSolution.Server.database;
+using MyBeastSolution.Server.loggers;
 
-namespace MyCustomGamemode.character
+namespace MyBeastSolution.Server.character
 {
     public class PlayerLogin
     {

@@ -1,16 +1,16 @@
 ﻿using System;
 using GTANetworkAPI;
-using MyCustomGamemode.character;
+using MyBeastSolution.Server.character;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using System.Collections;
 using System.Collections.Generic;
-using MyCustomGamemode.jobs;
+using MyBeastSolution.Server.jobs;
 
-namespace MyCustomGamemode.database
+namespace MyBeastSolution.Server.database
 {
-    class DBConnection :Script
+    class DBConnection : Script
     {
 
         private String connection_string = null;
@@ -37,182 +37,184 @@ namespace MyCustomGamemode.database
         //Insert statement
         public void Insert(string Squery)
         {
-            string query = Squery;
+            
+                string query = Squery;
 
-            //open connection
-            using (var connection = new MySqlConnection(connection_string))
-            {
-                //create command and assign the query and connection from the constructor
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                //Execute command
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        //Update statement
-        public void Update(string Squery)
-        {
-            string query = Squery;
-
-            using (var connection = new MySqlConnection(connection_string))
-            {
-                //create mysql command
-                connection.Open();
-                // Cleaner
-                MySqlCommand cmd = new MySqlCommand(query,connection);
-                /*//Assign the query using CommandText
-                cmd.CommandText = query;
-                //Assign the connection using Connection
-                cmd.Connection = connection;*/
-
-                //Execute query
-                cmd.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
-        //Delete statement
-        public void Delete(string Squery)
-        {
-            string query = Squery;
-
-            using (var connection = new MySqlConnection(connection_string))
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.ExecuteNonQuery();
-            }
-        }
-        public bool chkpswd( string playerName,string password)
-        {
-            using (var connection = new MySqlConnection(connection_string))
-            {
-                connection.Open();
-
-                MySqlCommand query = new MySqlCommand($"SELECT COUNT(*) FROM `players` WHERE `name` = '{playerName}' AND `password` = sha1('{password}')", connection);
-                int exists = int.Parse(query.ExecuteScalar().ToString());
-                if (exists > 0)
+                //open connection
+                using (var connection = new MySqlConnection(connection_string))
                 {
-                    if (exists == 1)
+                    //create command and assign the query and connection from the constructor
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                    //Execute command
+                    cmd.ExecuteNonQuery();
+                }
+        }
+
+            //Update statement
+            public void Update(string Squery)
+            {
+                string query = Squery;
+
+                using (var connection = new MySqlConnection(connection_string))
+                {
+                    //create mysql command
+                    connection.Open();
+                    // Cleaner
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    /*//Assign the query using CommandText
+                    cmd.CommandText = query;
+                    //Assign the connection using Connection
+                    cmd.Connection = connection;*/
+
+                    //Execute query
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            //Delete statement
+            public void Delete(string Squery)
+            {
+                string query = Squery;
+
+                using (var connection = new MySqlConnection(connection_string))
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            public bool chkpswd(string playerName, string password)
+            {
+                using (var connection = new MySqlConnection(connection_string))
+                {
+                    connection.Open();
+
+                    MySqlCommand query = new MySqlCommand($"SELECT COUNT(*) FROM `players` WHERE `name` = '{playerName}' AND `password` = sha1('{password}')", connection);
+                    int exists = int.Parse(query.ExecuteScalar().ToString());
+                    if (exists > 0)
                     {
-                        connection.Close();
-                        return true;
+                        if (exists == 1)
+                        {
+                            connection.Close();
+                            return true;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
 
                     }
+                    connection.Close();
+                    return false;
                 }
-                else
-                {
-
-                }
-                connection.Close();
-                return false;
             }
-        }
 
-        public bool playerExists(string playerName)
-        {
-            using (var connection = new MySqlConnection(connection_string))
+            public bool playerExists(string playerName)
             {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM `players` WHERE `name` = '{playerName}'", connection);
-                int exists = int.Parse(cmd.ExecuteScalar().ToString());
-                if (exists > 0)
+                using (var connection = new MySqlConnection(connection_string))
                 {
-                    if (exists == 1)
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM `players` WHERE `name` = '{playerName}'", connection);
+                    int exists = int.Parse(cmd.ExecuteScalar().ToString());
+                    if (exists > 0)
                     {
-                     //
-                        connection.Close();
-                        return true;
+                        if (exists == 1)
+                        {
+                            //
+                            connection.Close();
+                            return true;
+                        }
+                        else
+                        {
+                            //
+                        }
                     }
                     else
                     {
-                    //
+
                     }
+                    connection.Close();
+                    return false;
                 }
-                else
-                {
-
-                }
-                connection.Close();
-                return false;
             }
-        }
 
-        public void createUser(string playerName,string password)
-        {
-            using (var connection = new MySqlConnection(connection_string))
+            public void createUser(string playerName, string password)
             {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand($"INSERT INTO `players` (`name`,`password`) VALUES ('{playerName}',sha1('{password}'))", connection);
-                cmd.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
-        
-        public Player pullUser(Client client, string username)
-        {
-            Player p = new Player();
-            using (var connection = new MySqlConnection(connection_string))
-            {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM `players` WHERE `name` = '{username}'", connection);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                while (dataReader.Read())
+                using (var connection = new MySqlConnection(connection_string))
                 {
-                    p.id = Convert.ToInt32(dataReader["id"]);
-                    p.pName = dataReader["name"].ToString();
-                    p.pAdmin = Convert.ToInt32(dataReader["adminlvl"]);
-                    p.pMoney = Convert.ToInt32(dataReader["pmoney"]);
-                    p.pMats = Convert.ToInt32(dataReader["pmaterials"]);
-                    NAPI.Util.ConsoleOutput($"Data pulled");
-                    
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand($"INSERT INTO `players` (`name`,`password`) VALUES ('{playerName}',sha1('{password}'))", connection);
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
                 }
-                dataReader.Close();
-                connection.Close();
             }
-            return p;
-        }
 
-
-        public List<MatRun> getMaterialRuns()
-        {
-            Player p = new Player();
-            using (var connection = new MySqlConnection(connection_string))
+            public Player pullUser(Client client, string username)
             {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM `material_runs`", connection);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                List<MatRun> list = new List<MatRun>();
-
-                while (dataReader.Read())
+                Player p = new Player();
+                using (var connection = new MySqlConnection(connection_string))
                 {
-                    MatRun m = new MatRun();
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand($"SELECT * FROM `players` WHERE `name` = '{username}'", connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                    m.id = Convert.ToInt32(dataReader["matrun_id"]);
-                    m.name = dataReader["matrun_name"].ToString();
-                    m.setPayment(Convert.ToInt32(dataReader["matrun_payment"]));
-                    m.matamount = Convert.ToInt32(dataReader["matrun_material_amount"]);
-                    // Pickup Location
-                    m.pposX = Convert.ToDouble(dataReader["matrun_p_pos_x"]);
-                    m.pposY = Convert.ToDouble(dataReader["matrun_p_pos_y"]);
-                    m.pposZ = Convert.ToDouble(dataReader["matrun_p_pos_z"]);
-                    // Delivery Location
-                    m.dposX = Convert.ToDouble(dataReader["matrun_d_pos_x"]);
-                    m.dposY = Convert.ToDouble(dataReader["matrun_d_pos_y"]);
-                    m.dposZ = Convert.ToDouble(dataReader["matrun_d_pos_z"]);
+                    while (dataReader.Read())
+                    {
+                        p.id = Convert.ToInt32(dataReader["id"]);
+                        p.pName = dataReader["name"].ToString();
+                        p.pAdmin = Convert.ToInt32(dataReader["adminlvl"]);
+                        p.pMoney = Convert.ToInt32(dataReader["pmoney"]);
+                        p.pMats = Convert.ToInt32(dataReader["pmaterials"]);
+                        NAPI.Util.ConsoleOutput($"Data pulled");
 
-                    list.Add(m);
+                    }
+                    dataReader.Close();
+                    connection.Close();
                 }
-                dataReader.Close();
-                connection.Close();
-
-                return list;
+                return p;
             }
-        }
+
+
+            public List<MatRun> getMaterialRuns()
+            {
+                Player p = new Player();
+                using (var connection = new MySqlConnection(connection_string))
+                {
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM `material_runs`", connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                    List<MatRun> list = new List<MatRun>();
+
+                    while (dataReader.Read())
+                    {
+                        MatRun m = new MatRun();
+
+                        m.id = Convert.ToInt32(dataReader["matrun_id"]);
+                        m.name = dataReader["matrun_name"].ToString();
+                        m.setPayment(Convert.ToInt32(dataReader["matrun_payment"]));
+                        m.matamount = Convert.ToInt32(dataReader["matrun_material_amount"]);
+                        // Pickup Location
+                        m.pposX = Convert.ToDouble(dataReader["matrun_p_pos_x"]);
+                        m.pposY = Convert.ToDouble(dataReader["matrun_p_pos_y"]);
+                        m.pposZ = Convert.ToDouble(dataReader["matrun_p_pos_z"]);
+                        // Delivery Location
+                        m.dposX = Convert.ToDouble(dataReader["matrun_d_pos_x"]);
+                        m.dposY = Convert.ToDouble(dataReader["matrun_d_pos_y"]);
+                        m.dposZ = Convert.ToDouble(dataReader["matrun_d_pos_z"]);
+
+                        list.Add(m);
+                    }
+                    dataReader.Close();
+                    connection.Close();
+
+                    return list;
+                }
+            }
 
     }
 }
+

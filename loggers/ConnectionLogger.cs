@@ -2,7 +2,7 @@
 using System.IO;
 using GTANetworkAPI;
 
-namespace MyCustomGamemode.loggers
+namespace MyBeastSolution.Server.loggers
 {
     public class ConnectionLogger
     {

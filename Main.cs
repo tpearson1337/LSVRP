@@ -1,15 +1,15 @@
-using GTANetworkAPI;
-using MyCustomGamemode.loggers;
-using MyCustomGamemode.database;
-using MyCustomGamemode.character;
-using MyCustomGamemode.globals;
-using MyCustomGamemode.jobs;
+using System;
+using System.Linq;
+using MyBeastSolution.Server.database;
+using MyBeastSolution.Server.globals;
+using MyBeastSolution.Server.jobs;
+using MyBeastSolution.Server.loggers;
+using MyBeastSolution.Server.character;
 using System.Collections.Generic;
+using GTANetworkAPI;
 
-namespace MyCustomGamemode
+namespace MyBeastSolution.Server
 {
-
-
     public class Main : Script
     {
         DBConnection db = new DBConnection();
@@ -47,23 +47,20 @@ namespace MyCustomGamemode
                 NAPI.Marker.CreateMarker(1, posm, new Vector3(), new Vector3(), 2f, new Color(0, 255, 0, 150));
                 NAPI.ColShape.CreatCircleColShape(dpos.X, dpos.Y, 3, 0);
             }
+
         }
-
-
-        [ServerEvent(Event.PlayerConnected)]// Connection Event.
-
+        [ServerEvent(Event.PlayerConnected)]// Connection Event. When did the error start happening? its now 0.3.7.0 from 0.3.6
         public void ConnectionDisplayLogin(Client client)
         {
-            //Update logs with connection informati
+            // Update logs with connection informati
             ConnectionLogger L = new ConnectionLogger();
             PlayerLogin M = new PlayerLogin();
 
             string msg = $"Someone using the name{client.Name}  has connected to the server.";
             M.PlayerLoginWindow(client);
-            L.LogMessageToFile(msg);
         }
 
-        [ServerEvent(Event.PlayerDisconnected)]//Disconnect Event.
+        [ServerEvent(Event.PlayerDisconnected),]//Disconnect Event.
 
         public void ConnectionDisplayDisconnect(Client client, DisconnectionType type, string reason)
         {   //When player disconnectes launch the following functions
@@ -143,9 +140,11 @@ namespace MyCustomGamemode
                 Vector3 dropp = new Vector3(m.dposX, m.dposY, m.dposZ);
                 if (Con.IsPlayerInRangeOf(client, Matp, 3))
                 {
-                    client.TriggerEvent("setwaypoint",dropp.X,dropp.Y,dropp.Z);
+                    client.TriggerEvent("setwaypoint", dropp.X, dropp.Y, dropp.Z);
                     client.SendChatMessage("~r~Please drive to marked destination.");
+                    int pmoney = client.GetData("MONEY");
                     client.SetData("MATPACKAGE", 1);
+                    client.SetData("MONEY", pmoney - 250);
                     return;
                 }
             }
@@ -161,20 +160,14 @@ namespace MyCustomGamemode
                 {
                     int matpackage = client.GetData("MATPACKAGE");
                     if (matpackage < 1) return;
-                    int Pmoney = client.GetData("MATERIALS");
+                    int Pmats = client.GetData("MATERIALS");
                     client.SendChatMessage("~r~You have received 250 materials.");
-                    client.SetData("MATERIALS", Pmoney + 250);
+                    client.SetData("MATERIALS", Pmats + 250);
                     client.SetData("MATPACKAGE", 0);
                     client.TriggerEvent("deletewaypoint");
                     return;
                 }
             }
-        }
-        [ServerEvent(Event.ChatMessage)]
-        public void Chatmessage(GTANetworkAPI.Client client, System.String message)
-        {
-            message = "daddy";
-            return;
         }
 
         [Command("inventory")]
@@ -185,5 +178,5 @@ namespace MyCustomGamemode
             client.SendChatMessage("|-----------Temporary Inventory-----------|");
             client.SendChatMessage($"|-Money:${pmoney}-Materials:{pmats}-------|");
         }
-    }//Main
+    }
 }

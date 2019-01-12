@@ -1,12 +1,12 @@
 ﻿using GTANetworkAPI;
-using MyCustomGamemode.database;
+using MyBeastSolution.Server.database;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System;
 
-namespace MyCustomGamemode.jobs
+namespace  MyBeastSolution.Server.jobs
 {
     public class MatRun : Script
     {
@@ -33,7 +33,7 @@ namespace MyCustomGamemode.jobs
             // Update Database in background.
             if (updateDatabase)
             {
-
+           
             }
         }
 

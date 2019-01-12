@@ -1,7 +1,7 @@
 ﻿using GTANetworkAPI;
 using System;
 
-namespace MyCustomGamemode.globals
+namespace MyBeastSolution.Server.globals
 {
     public class Constants
     {

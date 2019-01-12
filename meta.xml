@@ -1,4 +1,7 @@
 <meta>
-  <info name="MyCustomGamemode" type="script" />
-  <script src="compiled/netcoreapp2.0/MyCustomGamemode.dll" />
+ <script src="MyBeastSolution.Server.dll" /> 
+ 	<info name="MyBeastSolution.Server" type="gamemode" description="metadescription"/>
+    <settings>
+    	<settings name="my_settings" value="69" description="Example number" />
+    </settings> 	
 </meta>

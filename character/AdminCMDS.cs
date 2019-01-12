@@ -2,7 +2,7 @@
 using GTANetworkAPI;
 
 
-namespace MyCustomGamemode.character
+namespace MyBeastSolution.Server.character
 {
 
     public class AdminCMDS :Script
