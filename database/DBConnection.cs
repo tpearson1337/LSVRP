@@ -12,7 +12,7 @@ namespace MyBeastSolution.Server.database
 {
     class DBConnection : Script
     {
-
+        List<MatRun> list = new List<MatRun>();
         private String connection_string = null;
 
         //Constructor
@@ -152,7 +152,18 @@ namespace MyBeastSolution.Server.database
                 }
             }
 
-            public Player pullUser(Client client, string username)
+            public void createMatrun(string name, Vector3 pickup,Vector3 dropoff,int price, int matamount)
+            {
+            using (var connection = new MySqlConnection(connection_string))
+                {
+                connection.Open();
+                MySqlCommand cmd = new MySqlCommand($"INSERT INTO `material_runs` (`matrun_p_pos_x`,`matrun_p_pos_y`,`matrun_p_pos_z`,`matrun_d_pos_x`,`matrun_d_pos_y`,`matrun_d_pos_z`,`matrun_payment`,`matrun_materials_amount`,`matrun_name`) VALUES ('{pickup.X}','{pickup.Y}','{pickup.Z}','{dropoff.X}','{dropoff.Y},'{dropoff.Z}','{price}','{matamount}')", connection);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                }
+            }
+
+        public Player pullUser(Client client, string username)
             {
                 Player p = new Player();
                 using (var connection = new MySqlConnection(connection_string))
@@ -187,7 +198,6 @@ namespace MyBeastSolution.Server.database
                     MySqlCommand cmd = new MySqlCommand("SELECT * FROM `material_runs`", connection);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                    List<MatRun> list = new List<MatRun>();
 
                     while (dataReader.Read())
                     {

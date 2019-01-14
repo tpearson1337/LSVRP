@@ -15,6 +15,8 @@ namespace MyBeastSolution.Server
         DBConnection db = new DBConnection();
         Constants Con = new Constants();
         public static List<MatRun> materialRuns = new List<MatRun>();
+        public static List<Client> MAX_PLAYERS = new List<Client>();
+        public static List<Player> PLAYERSTAT = new List<Player>();
 
         [ServerEvent(Event.ResourceStart)]
         public void ResourceStart()
@@ -49,7 +51,9 @@ namespace MyBeastSolution.Server
             }
 
         }
+
         [ServerEvent(Event.PlayerConnected)]// Connection Event. When did the error start happening? its now 0.3.7.0 from 0.3.6
+
         public void ConnectionDisplayLogin(Client client)
         {
             // Update logs with connection informati
@@ -65,8 +69,8 @@ namespace MyBeastSolution.Server
         public void ConnectionDisplayDisconnect(Client client, DisconnectionType type, string reason)
         {   //When player disconnectes launch the following functions
             string playerName = client.Name;
-            int playermoney = client.GetData("MONEY");
-            int playermats = client.GetData("MATERIALS");
+            int playermoney = Getplayerstat(client, "MONEY");
+            int playermats = Getplayerstat(client, "MATERIALS");
             db.Update($"UPDATE `players` SET `pmoney` = '{playermoney}', `pmaterials` = '{playermats}' WHERE `name` = '{playerName}'; ");
             //Update logs with disconnection information.
             string msg = $"Someone using the name {client.Name} has disconnected from the server.";
@@ -82,19 +86,12 @@ namespace MyBeastSolution.Server
             if (db.chkpswd(username, password))
             {
                 Player p = db.pullUser(player, username);
-                //Clear data slate before adding SQL values in case there was a player with the same ID that had logged off.
-                player.ResetData("ID");
-                player.ResetData("ADMIN");
-                player.ResetData("FACTION");
-                player.ResetData("MONEY");
+
                 //Setting data to Client 
                 player.SetData("ID", p.id);
-                player.SetData("NAME", p.pName);
-                player.SetData("ADMIN", p.pAdmin);
-                player.SetData("FACTION", p.pFaction);
-                player.SetData("MONEY", p.pMoney);
-                player.SetData("MATERIALS", p.pMats);
-                player.Nametag = player.GetData("NAME");
+                player.Nametag = p.pName;
+                MAX_PLAYERS.Add(player);
+                PLAYERSTAT.Add(p);
 
                 player.TriggerEvent("LoginResult", 1);
             }
@@ -113,19 +110,11 @@ namespace MyBeastSolution.Server
                 player.TriggerEvent("RegisterResult", 1);
                 db.createUser(username, password);
                 Player p = db.pullUser(player, username);// Pull default data now that it has been created
-                //Clear data slate before adding SQL values in case there was a player with the same ID that had logged off.
-                player.ResetData("ID");
-                player.ResetData("ADMIN");
-                player.ResetData("FACTION");
-                player.ResetData("MONEY");
                 // Setting data to Client
                 player.SetData("ID", p.id);
-                player.SetData("NAME", p.id);
-                player.SetData("ADMIN", p.pMoney);
-                player.SetData("FACTION", p.pFaction);
-                player.SetData("MONEY", p.pMoney);
-                player.SetData("MATERIALS", p.pMats);
-                player.Nametag = player.GetData("NAME");
+                player.Nametag = p.pName;
+                MAX_PLAYERS.Add(player);//ADD player to MAX player list
+                PLAYERSTAT.Add(p);//ADD player to player stat list
             }
 
         }
@@ -142,9 +131,9 @@ namespace MyBeastSolution.Server
                 {
                     client.TriggerEvent("setwaypoint", dropp.X, dropp.Y, dropp.Z);
                     client.SendChatMessage("~r~Please drive to marked destination.");
-                    int pmoney = client.GetData("MONEY");
+                    int pmoney = Getplayerstat(client, "MONEY");
                     client.SetData("MATPACKAGE", 1);
-                    client.SetData("MONEY", pmoney - 250);
+                    Setplayerstat(client, "MONEY", pmoney - 250);
                     return;
                 }
             }
@@ -153,6 +142,7 @@ namespace MyBeastSolution.Server
         [ServerEvent(Event.PlayerEnterColshape)]
         public void PlayerEnterpoint(GTANetworkAPI.ColShape colShape, GTANetworkAPI.Client client)
         {
+            //Matrun Collision Enter
             foreach (MatRun m in materialRuns)
             {
                 Vector3 dropp = new Vector3(m.dposX, m.dposY, m.dposZ);
@@ -160,23 +150,72 @@ namespace MyBeastSolution.Server
                 {
                     int matpackage = client.GetData("MATPACKAGE");
                     if (matpackage < 1) return;
-                    int Pmats = client.GetData("MATERIALS");
+                    int Pmats = Getplayerstat(client, "MATERIALS");
                     client.SendChatMessage("~r~You have received 250 materials.");
-                    client.SetData("MATERIALS", Pmats + 250);
+                    Setplayerstat(client,"MATERIALS", Pmats + 250);
                     client.SetData("MATPACKAGE", 0);
                     client.TriggerEvent("deletewaypoint");
                     return;
                 }
             }
+            //Matrun Collision Enter end
         }
 
         [Command("inventory")]
         public void CheckInventory(Client client)
         {
-            int pmoney = client.GetData("MONEY");
-            int pmats = client.GetData("MATERIALS");
+            int pmoney = Getplayerstat(client, "MONEY");
+            int pmats = Getplayerstat(client, "MATERIALS");
             client.SendChatMessage("|-----------Temporary Inventory-----------|");
             client.SendChatMessage($"|-Money:${pmoney}-Materials:{pmats}-------|");
+        }
+        public int Getplayerstat(Client client,string statname)
+        {
+            int playerid = client.GetData("ID");
+            foreach (Player p in PLAYERSTAT)
+            {
+                //DATA Pulls
+                if (p.id == playerid)
+                {
+                    switch (statname)
+                    {
+                        case "ADMIN": return p.pAdmin;
+                        case "MONEY": return p.pMoney;
+                        case "MATERIALS": return p.pMats;
+                        default: return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+                
+            }
+            return 0;
+        }
+        public int Setplayerstat(Client client, string statname,int value)
+        {
+            int playerid = client.GetData("ID");
+            foreach (Player p in PLAYERSTAT)
+            {
+                //DATA Pulls
+                if (p.id == playerid)
+                {
+                    switch (statname)
+                    {
+                        case "ADMIN": return p.pAdmin = value;
+                        case "MONEY": return p.pMoney = value;
+                        case "MATERIALS": return p.pMats = value;
+                        default: return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+
+            }
+            return 0;
         }
     }
 }

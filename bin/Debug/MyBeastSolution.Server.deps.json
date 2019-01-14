@@ -1,18 +1,31 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "a28885a1c652a0838a5923a86a42f61255dd5969"
+    "signature": "c2f4547d8bee46a6ff7695e35de3520bd94d4c02"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
       "MyBeastSolution.Server/1.0.0": {
         "dependencies": {
+          "AlternateLife.RageMP.Net": "1.1.0",
           "MySql.Data": "8.0.13",
           "Bootstrapper": "0.3.7.0"
         },
         "runtime": {
           "MyBeastSolution.Server.dll": {}
+        }
+      },
+      "AlternateLife.RageMP.Net/1.1.0": {
+        "dependencies": {
+          "NLog": "4.5.11",
+          "Newtonsoft.Json": "12.0.1"
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/AlternateLife.RageMP.Net.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
         }
       },
       "Google.Protobuf/3.5.1": {
@@ -34,6 +47,22 @@
           "lib/netcoreapp2.0/MySql.Data.dll": {
             "assemblyVersion": "8.0.13.0",
             "fileVersion": "8.0.13.0"
+          }
+        }
+      },
+      "Newtonsoft.Json/12.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.1.22727"
+          }
+        }
+      },
+      "NLog/4.5.11": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.5.11.8645"
           }
         }
       },
@@ -174,6 +203,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "AlternateLife.RageMP.Net/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-klvxVW1ZQUa9hbWsdBnMKac6Tza0P9g6nu3Txyu23n7TmwsFDTf/7oAuWYRkR39lKuWqWQb29dDMj3NGveFBbQ==",
+      "path": "alternatelife.ragemp.net/1.1.0",
+      "hashPath": "alternatelife.ragemp.net.1.1.0.nupkg.sha512"
+    },
     "Google.Protobuf/3.5.1": {
       "type": "package",
       "serviceable": true,
@@ -187,6 +223,20 @@
       "sha512": "sha512-mXfjg2pOdzpyd4wkXZPKYcNluzV68ggAO/LPcT7iuzU5kDS7livUDR8IsKkarEhBmRxBy0XmBnUOkEWJvfOW9Q==",
       "path": "mysql.data/8.0.13",
       "hashPath": "mysql.data.8.0.13.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jmVyoEyk0In8r+AObYQyFKVFm7uSRzE0XSHSbEtBJcZDMV6DqJoyB4FLcHwprPVhAh826so0db3DIKXVnpGoPA==",
+      "path": "newtonsoft.json/12.0.1",
+      "hashPath": "newtonsoft.json.12.0.1.nupkg.sha512"
+    },
+    "NLog/4.5.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7TI+dYvEIOcCN6fjr3yjMN5AtPBSbHNxKGmn/5rkqbBk81MGsnQBkParoGOidibDIe3dwThJJndxl7O3zmd3rA==",
+      "path": "nlog/4.5.11",
+      "hashPath": "nlog.4.5.11.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/4.4.1": {
       "type": "package",

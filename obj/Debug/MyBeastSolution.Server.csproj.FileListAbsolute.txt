@@ -22,4 +22,7 @@ C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolut
 C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\System.Security.Cryptography.ProtectedData.dll
 C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\System.Security.Permissions.dll
 C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\System.Text.Encoding.CodePages.dll
+C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\AlternateLife.RageMP.Net.dll
+C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\Newtonsoft.Json.dll
+C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\bin\Debug\NLog.dll
 C:\RAGEMP\server-files\bridge\resources\MyBeastSolution\Server-Side\MyBeastSolution.Server\obj\Debug\MyBeastSolution.Server.csprojAssemblyReference.cache

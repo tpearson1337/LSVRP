@@ -9,7 +9,7 @@ namespace MyBeastSolution.Server.loggers
         
         public void LogMessageToFile(string msg)
         {
-            string path = "bridge/resources/MyCustomGamemode/Logs/ConnectionLog.txt";
+            string path = "C:/RAGEMP/server-files/bridge/resources/MyBeastSolution/Server-Side/MyBeastSolution.Server/Logs/ConnectionLog.txt";
                 System.IO.StreamWriter sw = System.IO.File.AppendText(path);
             try
             {
